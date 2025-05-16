@@ -69,7 +69,7 @@ function PostHeader({ avatar, name, location }) {
     return thisElm
 }
 
-function PostReaction({ likes, id }) {
+function PostReaction({ likes, id, username }) {
     const thisElm = document.createElement("div")
     thisElm.className = "post-reaction"
 
@@ -79,6 +79,11 @@ function PostReaction({ likes, id }) {
     const buttons = ["btn-like", "btn-comment", "btn-dm"].map(btn => {
         const buttonElm = document.createElement("button")
         buttonElm.className = btn
+        if (btn === "btn-like") {
+            buttonElm.addEventListener("click", function () {
+                triggerLikes(username)
+            })
+        }
         return buttonElm
     })
 
@@ -125,8 +130,8 @@ function triggerLikes(username) {
     console.log(username)
     const dataIndex = posts.findIndex(post => post.username === username)
     const post = posts[dataIndex]
-    
-    if(post.liked) return false
+
+    if (post.liked) return false
 
     post.liked = true
     post.likes += 1
